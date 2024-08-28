@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">  
+  
+  <ItemGroup>
+    <ProjectReference Include="..\CurrencyConverter.Application\CurrencyConverter.Application.csproj" />
+  </ItemGroup>
+  
+</Project>

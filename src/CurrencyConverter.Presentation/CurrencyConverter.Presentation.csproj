@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <UserSecretsId>b6623b17-2327-4094-8afa-63f2c54721dd</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>    
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />    
+    <PackageReference Include="FastEndpoints.Swagger" />    
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CurrencyConverter.Infrastructure\CurrencyConverter.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
