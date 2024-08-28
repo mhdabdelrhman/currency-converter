@@ -22,11 +22,11 @@ public static class ServiceCollectionExtensions
         services.AddFastEndpoints()
             .SwaggerDocument(o =>
             {
-                o.AutoTagPathSegmentIndex = 2;
+                o.AutoTagPathSegmentIndex = 1;
                 o.ShortSchemaNames = true;
                 o.TagDescriptions = t =>
                 {
-                    t["Converter"] = "Currency Converter APIs";
+                    t["Api"] = "Currency Converter APIs";
                 };
                 o.TagCase = TagCase.TitleCase;
                 o.EnableJWTBearerAuth = false;
