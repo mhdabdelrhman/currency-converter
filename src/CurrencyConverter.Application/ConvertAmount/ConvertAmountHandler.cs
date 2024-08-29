@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using CurrencyConverter.Common.Dtos;
 using CurrencyConverter.Common.Exceptions;
+using CurrencyConverter.Common.Helpers;
 using CurrencyConverter.Common.Interfaces;
 using CurrencyConverter.Common.Models;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -14,21 +16,26 @@ public class ConvertAmountHandler : IRequestHandler<ConvertAmountQuery, Exchange
     private readonly IMapper _mapper;
     private readonly ConverterOptions _converterOptions;
     private readonly IFrankfurterService _frankfurterService;
+    private readonly IValidator<ConvertAmountQuery> _validator;
 
     public ConvertAmountHandler(ILogger<ConvertAmountHandler> logger
         , IMapper mapper
         , IOptions<ConverterOptions> converterOptions
         , IFrankfurterService frankfurterService
+        , IValidator<ConvertAmountQuery> validator
     )
     {
         _logger = logger;
         _mapper = mapper;
         _converterOptions = converterOptions.Value;
         _frankfurterService = frankfurterService;
+        _validator = validator;
     }
 
     public async Task<ExchangeRatesDto> Handle(ConvertAmountQuery request, CancellationToken cancellationToken)
     {
+        await ValidationHelper.ValidateAsync(_validator, request);
+
         if (!IsConvertAmountSupported(request.FromCurrency))
             throw new ConvertAmountNotSupportedException($"Convert amount from {request.FromCurrency} is not supported.");
 

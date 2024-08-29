@@ -56,13 +56,19 @@ namespace CurrencyConverter.Middlewares
             if (exception is ApiException apiException)
                 return apiException.StatusCode;
 
+            if (exception is ApiValidationException)
+                return (int)HttpStatusCode.BadRequest;
+
             return (int)HttpStatusCode.InternalServerError;
         }
 
         private string GetErrorMessage(Exception exception)
         {
-            if (exception is ApiException apiException)
+            if (exception is ApiException)
                 return "API Error.";
+
+            if (exception is ApiValidationException)
+                return "Validation Error.";
 
             return "Server Error.";
         }

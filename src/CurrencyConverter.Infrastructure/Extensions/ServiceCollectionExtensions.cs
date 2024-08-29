@@ -2,6 +2,7 @@
 using CurrencyConverter.Common.Mappings;
 using CurrencyConverter.Common.Models;
 using CurrencyConverter.Frankfurter;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Refit;
@@ -12,6 +13,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddValidatorsFromAssembly(typeof(AutoMapperProfile).Assembly);
+
         services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
         services.AddMediatR(options =>
