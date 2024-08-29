@@ -1,8 +1,6 @@
-﻿using CurrencyConverter.Common.Exceptions;
-using CurrencyConverter.ConvertAmount;
+﻿using CurrencyConverter.ConvertAmount;
 using FastEndpoints;
 using MediatR;
-using System.Net;
 
 namespace CurrencyConverter.Endpoints;
 
@@ -28,16 +26,9 @@ public class ConvertAmountEndpoint : Endpoint<ConvertAmountRequest>
     public override async Task HandleAsync(ConvertAmountRequest req, CancellationToken ct)
     {
         var query = new ConvertAmountQuery(req.From, req.To, req.Amount);
-        try
-        {
-            var exchangeRates = await _mediator.Send(query, ct);
+        var exchangeRates = await _mediator.Send(query, ct);
 
-            await SendOkAsync(exchangeRates, ct);
-        }
-        catch (ConvertAmountNotSupportedException)
-        {
-            await SendAsync("Bad request", statusCode: (int)HttpStatusCode.BadRequest, cancellation: ct);
-        }
+        await SendOkAsync(exchangeRates, ct);
     }
 
 }

@@ -59,6 +59,9 @@ namespace CurrencyConverter.Middlewares
             if (exception is ApiValidationException)
                 return (int)HttpStatusCode.BadRequest;
 
+            if (exception is ApiConvertNotSupportedException)
+                return (int)HttpStatusCode.BadRequest;
+
             return (int)HttpStatusCode.InternalServerError;
         }
 
@@ -66,6 +69,9 @@ namespace CurrencyConverter.Middlewares
         {
             if (exception is ApiException)
                 return "API Error.";
+
+            if (exception is ApiConvertNotSupportedException)
+                return "Convert Error";
 
             if (exception is ApiValidationException)
                 return "Validation Error.";

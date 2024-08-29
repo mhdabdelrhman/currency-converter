@@ -37,10 +37,10 @@ public class ConvertAmountHandler : IRequestHandler<ConvertAmountQuery, Exchange
         await ValidationHelper.ValidateAsync(_validator, request);
 
         if (!IsConvertAmountSupported(request.FromCurrency))
-            throw new ConvertAmountNotSupportedException($"Convert amount from {request.FromCurrency} is not supported.");
+            throw new ApiConvertNotSupportedException($"Convert amount from {request.FromCurrency} is not supported.");
 
         if (!IsConvertAmountSupported(request.ToCurrency))
-            throw new ConvertAmountNotSupportedException($"Convert amount to {request.ToCurrency} is not supported.");
+            throw new ApiConvertNotSupportedException($"Convert amount to {request.ToCurrency} is not supported.");
 
         var exchangeRates = await _frankfurterService.ConvertAmountAsync(request.FromCurrency, request.ToCurrency, request.Amount);
 
