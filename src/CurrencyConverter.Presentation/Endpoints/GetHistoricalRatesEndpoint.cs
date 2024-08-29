@@ -38,4 +38,4 @@ public class GetHistoricalRatesEndpoint : Endpoint<GetHistoricalRatesRequest, Hi
     }
 }
 
-public record GetHistoricalRatesRequest(string Currency, DateTime StartDate, DateTime EndDate, int? Skip, int? Limit);
+public record GetHistoricalRatesRequest(string Currency, DateTime StartDate, DateTime EndDate, int? Skip = 0, int? Limit = AppConsts.DEFAULT_PAGE_SIZE);

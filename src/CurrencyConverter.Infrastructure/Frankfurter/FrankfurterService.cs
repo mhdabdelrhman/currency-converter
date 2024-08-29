@@ -12,8 +12,6 @@ namespace CurrencyConverter.Frankfurter;
 public class FrankfurterService(ILogger<FrankfurterService> logger, IFrankfurterAPI frankfurterAPI)
     : IFrankfurterService
 {
-    const int MAX_RETRY_COUNT = 3;
-
     public async Task<ExchangeRates> GetLatestExchangeAsync(string currency)
     {
         var exchangeRates = await GetLatestExchangeAndConvertAsync(currency);
@@ -85,7 +83,7 @@ public class FrankfurterService(ILogger<FrankfurterService> logger, IFrankfurter
     private AsyncRetryPolicy BuildRetryPolicy<TException>() where TException : Exception
     {
         return Policy.Handle<TException>()
-            .WaitAndRetryAsync(MAX_RETRY_COUNT,
+            .WaitAndRetryAsync(AppConsts.MAX_RETRY_COUNT,
                 retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                 (exception, sleepTime, context) =>
                 {

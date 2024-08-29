@@ -8,8 +8,6 @@ namespace CurrencyConverter.Historicals;
 
 public class GetHistoricalRatesHandler : IRequestHandler<GetHistoricalRatesQuery, HistoricalRatesPageDto>
 {
-    const int DEFAULT_PAGE_SIZE = 10;
-
     private readonly ILogger _logger;
     private readonly IFrankfurterService _frankfurterService;
     private readonly IValidator<GetHistoricalRatesQuery> _validator;
@@ -29,7 +27,7 @@ public class GetHistoricalRatesHandler : IRequestHandler<GetHistoricalRatesQuery
         await ValidationHelper.ValidateAsync(_validator, request);
 
         var skip = request.Skip ?? 0;
-        var limit = request.Limit ?? DEFAULT_PAGE_SIZE;
+        var limit = request.Limit ?? AppConsts.DEFAULT_PAGE_SIZE;
 
         var historicalRatesPage = BuildPageData(1, request);
 
