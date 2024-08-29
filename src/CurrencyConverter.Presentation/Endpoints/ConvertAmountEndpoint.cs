@@ -21,7 +21,7 @@ public class ConvertAmountEndpoint : Endpoint<ConvertAmountRequest>
 
     public override void Configure()
     {
-        Get("/api/convert-amount/{from}");
+        Get("/api/convert-amount/{amount}/{from}/{to}");
         AllowAnonymous();
     }
 
@@ -30,9 +30,9 @@ public class ConvertAmountEndpoint : Endpoint<ConvertAmountRequest>
         var query = new ConvertAmountQuery(req.From, req.To, req.Amount);
         try
         {
-            var currencyConvert = await _mediator.Send(query, ct);
+            var exchangeRates = await _mediator.Send(query, ct);
 
-            await SendOkAsync(currencyConvert, ct);
+            await SendOkAsync(exchangeRates, ct);
         }
         catch (ConvertAmountNotSupportedException)
         {
@@ -42,4 +42,4 @@ public class ConvertAmountEndpoint : Endpoint<ConvertAmountRequest>
 
 }
 
-public record ConvertAmountRequest(string From, string? To, decimal? Amount);
+public record ConvertAmountRequest(string From, string To, decimal Amount);

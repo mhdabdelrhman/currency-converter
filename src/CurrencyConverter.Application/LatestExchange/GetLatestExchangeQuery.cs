@@ -2,4 +2,4 @@
 
 namespace CurrencyConverter.LatestExchange;
 
-public record GetLatestExchangeQuery(string Currency) : IRequest<CurrencyExchangeDto>;
+public record GetLatestExchangeQuery(string Currency) : IRequest<ExchangeRatesDto>;

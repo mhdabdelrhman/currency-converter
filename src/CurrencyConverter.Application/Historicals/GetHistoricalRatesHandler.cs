@@ -1,7 +1,7 @@
 ﻿using CurrencyConverter.Common.Dtos;
 using Microsoft.Extensions.Logging;
 
-namespace CurrencyConverter.HistoricalRates;
+namespace CurrencyConverter.Historicals;
 
 public class GetHistoricalRatesHandler : IRequestHandler<GetHistoricalRatesQuery, HistoricalRatesPageDto>
 {

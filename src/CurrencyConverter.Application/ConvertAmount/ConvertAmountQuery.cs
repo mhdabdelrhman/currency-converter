@@ -2,7 +2,4 @@
 
 namespace CurrencyConverter.ConvertAmount;
 
-public record ConvertAmountQuery(string FromCurrency,
-    string? ToCurrency,
-    decimal? Amount
-) : IRequest<CurrencyConvertDto>;
+public record ConvertAmountQuery(string FromCurrency, string ToCurrency, decimal Amount) : IRequest<ExchangeRatesDto>;

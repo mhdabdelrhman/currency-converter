@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CurrencyConverter.LatestExchange;
 
-public class GetLatestExchangeHandler : IRequestHandler<GetLatestExchangeQuery, CurrencyExchangeDto>
+public class GetLatestExchangeHandler : IRequestHandler<GetLatestExchangeQuery, ExchangeRatesDto>
 {
     private readonly ILogger _logger;
 
@@ -12,7 +12,7 @@ public class GetLatestExchangeHandler : IRequestHandler<GetLatestExchangeQuery, 
         _logger = logger;
     }
 
-    public Task<CurrencyExchangeDto> Handle(GetLatestExchangeQuery request, CancellationToken cancellationToken)
+    public Task<ExchangeRatesDto> Handle(GetLatestExchangeQuery request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

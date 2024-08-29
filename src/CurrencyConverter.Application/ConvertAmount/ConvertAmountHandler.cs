@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace CurrencyConverter.ConvertAmount;
 
-public class ConvertAmountHandler : IRequestHandler<ConvertAmountQuery, CurrencyConvertDto>
+public class ConvertAmountHandler : IRequestHandler<ConvertAmountQuery, ExchangeRatesDto>
 {
     private readonly ILogger _logger;
     private readonly ConverterOptions _converterOptions;
@@ -19,7 +19,7 @@ public class ConvertAmountHandler : IRequestHandler<ConvertAmountQuery, Currency
         _converterOptions = converterOptions.Value;
     }
 
-    public Task<CurrencyConvertDto> Handle(ConvertAmountQuery request, CancellationToken cancellationToken)
+    public Task<ExchangeRatesDto> Handle(ConvertAmountQuery request, CancellationToken cancellationToken)
     {
         if (!IsConvertAmountSupported(request.FromCurrency))
             throw new ConvertAmountNotSupportedException($"Convert amount for {request.FromCurrency} is not supported.");

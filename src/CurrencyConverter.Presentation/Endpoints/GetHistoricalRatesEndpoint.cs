@@ -1,5 +1,5 @@
 ﻿using CurrencyConverter.Common.Dtos;
-using CurrencyConverter.HistoricalRates;
+using CurrencyConverter.Historicals;
 using FastEndpoints;
 using MediatR;
 
@@ -20,21 +20,22 @@ public class GetHistoricalRatesEndpoint : Endpoint<GetHistoricalRatesRequest, Hi
 
     public override void Configure()
     {
-        Get("/api/historical-rates/{currency}");
+        Get("/api/historical-rates/{startDate}..{endDate}/{currency}");
         AllowAnonymous();
     }
     public override async Task HandleAsync(GetHistoricalRatesRequest req, CancellationToken ct)
     {
-        var query = new GetHistoricalRatesQuery(req.Currency, req.Start, req.End, req.Skip, req.Limit);
+        var query = new GetHistoricalRatesQuery(
+            req.Currency,
+            DateOnly.FromDateTime(req.StartDate),
+            DateOnly.FromDateTime(req.EndDate),
+            req.Skip,
+            req.Limit
+        );
         var page = await _mediator.Send(query, ct);
 
         await SendOkAsync(page, ct);
     }
 }
 
-public record GetHistoricalRatesRequest(string Currency,
-    DateOnly? Start,
-    DateOnly? End,
-    int? Skip,
-    int? Limit
-);
+public record GetHistoricalRatesRequest(string Currency, DateTime StartDate, DateTime EndDate, int? Skip, int? Limit);
