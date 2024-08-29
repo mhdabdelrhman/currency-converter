@@ -1,4 +1,5 @@
 ﻿using CurrencyConverter.Common.Interfaces;
+using CurrencyConverter.Common.Mappings;
 using CurrencyConverter.Common.Models;
 using CurrencyConverter.Frankfurter;
 using Microsoft.Extensions.Configuration;
@@ -11,9 +12,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
         services.AddMediatR(options =>
         {
-            options.RegisterServicesFromAssembly(typeof(ConverterOptions).Assembly);
+            options.RegisterServicesFromAssembly(typeof(AutoMapperProfile).Assembly);
         });
 
         services.AddOptions<ConverterOptions>()

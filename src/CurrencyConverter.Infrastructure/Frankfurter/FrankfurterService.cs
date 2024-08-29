@@ -26,7 +26,7 @@ public class FrankfurterService(ILogger<FrankfurterService> logger, IFrankfurter
         return exchangeRates!;
     }
 
-    public async Task<HistoricalRates> GetHistoricalRatesAsync(DateOnly startDate, DateOnly? endDate, string? fromCurrency, string? toCurrency)
+    public async Task<HistoricalRates> GetHistoricalRatesAsync(DateOnly startDate, DateOnly? endDate, string? fromCurrency, string? toCurrency, decimal? amount)
     {
         var retryPolicy = BuildRetryPolicy<Exception>();
         var response = await retryPolicy.ExecuteAsync(async () =>
@@ -35,7 +35,8 @@ public class FrankfurterService(ILogger<FrankfurterService> logger, IFrankfurter
                 startDateString: startDate.ToString("yyyy-MM-dd"),
                 endDateString: endDate?.ToString("yyyy-MM-dd"),
                 from: fromCurrency,
-                to: toCurrency
+                to: toCurrency,
+                amount: amount
             );
         });
 

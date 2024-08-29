@@ -8,5 +8,5 @@ public interface IFrankfurterService
 
     Task<ExchangeRates> ConvertAmountAsync(string fromCurrency, string? toCurrency = null, decimal? amount = null);
 
-    Task<HistoricalRates> GetHistoricalRatesAsync(DateOnly startDate, DateOnly? endDate = null, string? fromCurrency = null, string? toCurrency = null);
+    Task<HistoricalRates> GetHistoricalRatesAsync(DateOnly startDate, DateOnly? endDate = null, string? fromCurrency = null, string? toCurrency = null, decimal? amount = null);
 }

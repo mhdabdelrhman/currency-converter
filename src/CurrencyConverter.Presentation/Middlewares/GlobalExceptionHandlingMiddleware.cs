@@ -57,7 +57,7 @@ namespace CurrencyConverter.Middlewares
 
         private string GetErrorMessage(Exception exception)
         {
-            return "Internal Server Error.";
+            return "Server Error.";
         }
 
         private string GetErrorDetails(Exception exception)

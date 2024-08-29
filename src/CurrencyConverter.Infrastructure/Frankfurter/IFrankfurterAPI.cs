@@ -9,5 +9,5 @@ public interface IFrankfurterAPI
 
 
     [Get("/{startDateString}..{endDateString}")]
-    Task<HttpResponseMessage> GetHistoricalsAsync(string startDateString, string? endDateString, string? from, string? to);
+    Task<HttpResponseMessage> GetHistoricalsAsync(string startDateString, string? endDateString, string? from, string? to, decimal? amount);
 }

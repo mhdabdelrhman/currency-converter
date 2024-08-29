@@ -1,5 +1,7 @@
-﻿using CurrencyConverter.Common.Dtos;
+﻿using AutoMapper;
+using CurrencyConverter.Common.Dtos;
 using CurrencyConverter.Common.Exceptions;
+using CurrencyConverter.Common.Interfaces;
 using CurrencyConverter.Common.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -9,22 +11,33 @@ namespace CurrencyConverter.ConvertAmount;
 public class ConvertAmountHandler : IRequestHandler<ConvertAmountQuery, ExchangeRatesDto>
 {
     private readonly ILogger _logger;
+    private readonly IMapper _mapper;
     private readonly ConverterOptions _converterOptions;
+    private readonly IFrankfurterService _frankfurterService;
 
     public ConvertAmountHandler(ILogger<ConvertAmountHandler> logger
+        , IMapper mapper
         , IOptions<ConverterOptions> converterOptions
+        , IFrankfurterService frankfurterService
     )
     {
         _logger = logger;
+        _mapper = mapper;
         _converterOptions = converterOptions.Value;
+        _frankfurterService = frankfurterService;
     }
 
-    public Task<ExchangeRatesDto> Handle(ConvertAmountQuery request, CancellationToken cancellationToken)
+    public async Task<ExchangeRatesDto> Handle(ConvertAmountQuery request, CancellationToken cancellationToken)
     {
         if (!IsConvertAmountSupported(request.FromCurrency))
-            throw new ConvertAmountNotSupportedException($"Convert amount for {request.FromCurrency} is not supported.");
+            throw new ConvertAmountNotSupportedException($"Convert amount from {request.FromCurrency} is not supported.");
 
-        throw new NotImplementedException();
+        if (!IsConvertAmountSupported(request.ToCurrency))
+            throw new ConvertAmountNotSupportedException($"Convert amount to {request.ToCurrency} is not supported.");
+
+        var exchangeRates = await _frankfurterService.ConvertAmountAsync(request.FromCurrency, request.ToCurrency, request.Amount);
+
+        return _mapper.Map<ExchangeRatesDto>(exchangeRates);
     }
 
     #region Private Methods
