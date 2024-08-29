@@ -48,4 +48,4 @@ Make sure you have `make` installed on your system.
 
 - [.NET SDK](https://dotnet.microsoft.com/download) (if running with Visual Studio)
 - [Docker](https://www.docker.com/) (if running with Docker)
-- `make` (if using Make commands)
+- [`make`](https://www.gnu.org/software/make/manual/make.html) (if using Make commands)
