@@ -18,7 +18,15 @@ public static class ServiceCollectionExtensions
     {
         services.AddHealthChecks();
 
-        // add fast end points
+        services.AddOutputCache(options =>
+        {
+            // Enable default output caching for all endpoints
+            options.AddBasePolicy(builder =>
+            {
+                builder.Expire(TimeSpan.FromSeconds(10));
+            });
+        });
+
         services.AddFastEndpoints()
             .SwaggerDocument(o =>
             {
@@ -26,7 +34,7 @@ public static class ServiceCollectionExtensions
                 o.ShortSchemaNames = true;
                 o.TagDescriptions = t =>
                 {
-                    t["Api"] = "Currency Converter APIs";
+                    t["Api"] = "Currency Converter Endpoints (Press to expand)";
                 };
                 o.TagCase = TagCase.TitleCase;
                 o.EnableJWTBearerAuth = false;

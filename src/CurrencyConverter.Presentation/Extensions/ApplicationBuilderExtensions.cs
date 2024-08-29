@@ -18,6 +18,8 @@ public static class ApplicationBuilderExtensions
     {
         app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
+        app.UseOutputCache();
+
         app.UseHttpsRedirection();
 
         app.UseFastEndpoints(c =>
@@ -31,7 +33,7 @@ public static class ApplicationBuilderExtensions
         app.MapHealthChecks("/_health", new()
         {
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
-        });
+        }).CacheOutput(x => x.NoCache()); // Disable default caching for healthcheck
 
         return app;
     }
