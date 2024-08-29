@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using CurrencyConverter.Common.Exceptions;
+using System.Net;
 
 namespace CurrencyConverter.Middlewares
 {
@@ -30,7 +31,7 @@ namespace CurrencyConverter.Middlewares
         #region Private Methods
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var statusCode = GetStatusCode(context);
+            var statusCode = GetStatusCode(exception, context);
             var message = GetErrorMessage(exception);
             var details = GetErrorDetails(exception);
 
@@ -50,13 +51,19 @@ namespace CurrencyConverter.Middlewares
             });
         }
 
-        private int GetStatusCode(HttpContext context)
+        private int GetStatusCode(Exception exception, HttpContext context)
         {
+            if (exception is ApiException apiException)
+                return apiException.StatusCode;
+
             return (int)HttpStatusCode.InternalServerError;
         }
 
         private string GetErrorMessage(Exception exception)
         {
+            if (exception is ApiException apiException)
+                return "API Error.";
+
             return "Server Error.";
         }
 

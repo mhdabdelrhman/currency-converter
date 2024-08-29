@@ -1,9 +1,11 @@
-﻿using CurrencyConverter.Common.Interfaces;
+﻿using CurrencyConverter.Common.Exceptions;
+using CurrencyConverter.Common.Interfaces;
 using CurrencyConverter.Common.Models;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 using System.Net.Http.Json;
+using System.Text.Json.Nodes;
 
 namespace CurrencyConverter.Frankfurter;
 
@@ -40,7 +42,8 @@ public class FrankfurterService(ILogger<FrankfurterService> logger, IFrankfurter
             );
         });
 
-        response.EnsureSuccessStatusCode();
+        await CheckApiResponseAsync(response);
+
         var historicalRates = await response.Content.ReadFromJsonAsync<HistoricalRates>();
 
         return historicalRates!;
@@ -59,10 +62,24 @@ public class FrankfurterService(ILogger<FrankfurterService> logger, IFrankfurter
             );
         });
 
-        response.EnsureSuccessStatusCode();
+        await CheckApiResponseAsync(response);
+
         var exchangeRates = await response.Content.ReadFromJsonAsync<ExchangeRates>();
 
         return exchangeRates!;
+    }
+
+    private async Task CheckApiResponseAsync(HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode)
+            return;
+
+        var apiResponseStatusCode = (int)response.StatusCode;
+        var apiResponseObject = await response.Content.ReadFromJsonAsync<JsonObject>();
+        var apiResponseMessage = apiResponseObject?["message"]?.ToString()
+            ?? "invalid parameters";
+
+        throw new ApiException(apiResponseStatusCode, apiResponseMessage);
     }
 
     private AsyncRetryPolicy BuildRetryPolicy<TException>() where TException : Exception
