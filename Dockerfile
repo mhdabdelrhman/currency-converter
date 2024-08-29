@@ -2,12 +2,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 
-ENV ASPNETCORE_HTTP_PORTS=80
-ENV ASPNETCORE_URLS=http://+:80
-
-EXPOSE 80
-
-
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -15,6 +9,8 @@ WORKDIR /src
 COPY ["src/CurrencyConverter.Presentation/CurrencyConverter.Presentation.csproj", "CurrencyConverter.Presentation/"]
 COPY ["src/CurrencyConverter.Application/CurrencyConverter.Application.csproj", "CurrencyConverter.Application/"]
 COPY ["src/CurrencyConverter.Infrastructure/CurrencyConverter.Infrastructure.csproj", "CurrencyConverter.Infrastructure/"]
+COPY Directory.Packages.props .
+COPY Directory.Build.props .
 RUN dotnet restore "./CurrencyConverter.Presentation/CurrencyConverter.Presentation.csproj"
 COPY src/ .
 WORKDIR "/src/CurrencyConverter.Presentation"

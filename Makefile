@@ -7,16 +7,16 @@ build:
 	docker build -t $(IMAGE_NAME) .
 
 # Target to run the Docker container
-up: build
-	docker run -d --name $(CONTAINER_NAME) -p 80:80 $(IMAGE_NAME)
+start: build
+	docker run -d --name $(CONTAINER_NAME) -p 8080:8080 $(IMAGE_NAME)
 
 # Target to stop and remove the Docker container
-down:
+stop:
 	docker stop $(CONTAINER_NAME) || true
 	docker rm $(CONTAINER_NAME) || true
 
 # Target to build and run the container in one step
-restart: down up
+restart: stop start
 
 # Target to remove the Docker image
 clean:
